@@ -9,9 +9,9 @@
 #define BLE_LOCAL_NAME "M5Stick-Joy-PoC"
 
 // Please get 3 UNIQUE UUID from https://www.uuidgenerator.net/
-#define BLE_SERVICE_UUID ""
-#define BLE_CHARACTERISTIC_UUID_RX ""
-#define BLE_CHARACTERISTIC_UUID_NOTIFY ""
+#define BLE_SERVICE_UUID "1043de0e-a7da-11eb-bcbc-0242ac130002"
+#define BLE_CHARACTERISTIC_UUID_RX "1043e232-a7da-11eb-bcbc-0242ac130002"
+#define BLE_CHARACTERISTIC_UUID_NOTIFY "1043e340-a7da-11eb-bcbc-0242ac130002"
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pNotifyCharacteristic;
