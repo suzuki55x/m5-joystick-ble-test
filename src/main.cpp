@@ -1,3 +1,5 @@
+//#define IS_HAT
+
 #include <M5StickC.h>
 #include "Wire.h"
 #include <BLEDevice.h>
@@ -5,7 +7,16 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 
-#define JOY_ADDR 0x52
+#ifdef IS_HAT
+  #define JOY_ADDR 0x38// HAT
+  #define JOY_SDA 0
+  #define JOY_SCL 26
+#else
+  #define JOY_ADDR 0x52// Grove
+  #define JOY_SDA 32
+  #define JOY_SCL 33
+#endif
+
 #define BLE_LOCAL_NAME "M5Stick-Joy-PoC"
 
 // Please get 3 UNIQUE UUID from https://www.uuidgenerator.net/
@@ -87,7 +98,7 @@ void setup() {
 
   initBLE();
 
-  Wire.begin();
+  Wire.begin(JOY_SDA, JOY_SCL);
   M5.Lcd.setRotation(3);
 }
 
@@ -100,11 +111,22 @@ void loop() {
 
   loopBLE();
 
+#ifdef IS_HAT
+  Wire.beginTransmission(JOY_ADDR);
+  Wire.write(0x02);
+  Wire.endTransmission();
+#endif
+
   Wire.requestFrom(JOY_ADDR, 3);
   if (Wire.available()) {
     x_data = Wire.read();
     y_data = Wire.read();
     button_data = Wire.read();
+#ifdef IS_HAT
+    x_data = x_data+127;
+    y_data = y_data+127;
+    button_data = !button_data;
+#endif
     sprintf(data, "{ \"x\": %d, \"y\": %d, \"button\": %d }", x_data, y_data, button_data);
     Serial.print(data);
 
