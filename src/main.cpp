@@ -105,14 +105,14 @@ void loop() {
     x_data = Wire.read();
     y_data = Wire.read();
     button_data = Wire.read();
-    sprintf(data, "x:%d,y:%d,button:%d\n", x_data, y_data, button_data);
+    sprintf(data, "{ \"x\": %d, \"y\": %d, \"button\": %d }", x_data, y_data, button_data);
     Serial.print(data);
 
     pNotifyCharacteristic->setValue(data);
     pNotifyCharacteristic->notify();
 
     M5.Lcd.setCursor(1, 30, 2);
-    M5.Lcd.printf("x:%04d y:%04d button:%d\n", x_data, y_data, button_data);
+    M5.Lcd.printf("{ \"x\": %04d  \"y\": %04d  \"button\": %d }", x_data, y_data, button_data);
   }
   delay(10);
 }
